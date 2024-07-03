@@ -8,6 +8,7 @@ from  PWMpredictor.code  import main_PWMpredictor
 from BindZF_predictor.code import main_bindzfpredictor_predict
 
 
+
 def find_zf_binding_domains(protein_seq):
     # Define the correct regular expression pattern with character classes for amino acids
     amino_acids = "ACDEFGHIKLMNPQRSTVWY"
