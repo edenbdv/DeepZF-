@@ -8,6 +8,7 @@ def show_gui(protein_seq, zf_list, predictions, threshold=0.5):
     root.title("Protein Sequence Viewer")
     root.resizable(0, 0)
 
+
     label = Label(root, text="Protein Sequence Viewer", font=('Times New Roman', 16))
     label.pack(pady=10)
 
