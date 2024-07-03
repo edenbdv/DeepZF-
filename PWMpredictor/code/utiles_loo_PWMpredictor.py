@@ -1,4 +1,5 @@
-from functions import *
+# from functions import *
+import PWMpredictor.code.functions
 
 
 def get_label_mat(c_rc_df):

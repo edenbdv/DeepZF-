@@ -47,7 +47,7 @@ def create_zf_dataset(zf_lst,num_protein):
     print("Creating ZF dataset...")
     print(zf_lst)
     fieldnames = ['zf', 'label', 'seq', 'group']
-    file_path = f'/content/DeepZF/Results/zf_40_dataset{num_protein}.csv'
+    file_path = f'/Results/zf_40_dataset{num_protein}.csv'
 
     with open(file_path, 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -63,14 +63,14 @@ def create_zf_dataset(zf_lst,num_protein):
 
 def create_pwm_dataset(num_protein):
     # Read TSV file into a pandas DataFrame without header
-    tsv_file_path = f'/content/DeepZF/Results/results{num_protein}.tsv'
+    tsv_file_path = f'/Results/results{num_protein}.tsv'
     tsv_df = pd.read_csv(tsv_file_path, delimiter='\t', header=None)
 
     # Add a column name to t+he TSV file
     tsv_df.columns = ['probabilities'] + list(tsv_df.columns[1:])
 
     # Read CSV file into a pandas DataFrame
-    csv_file_path = f'/content/DeepZF/Results/zf_40_dataset{num_protein}.csv'
+    csv_file_path = f'/Results/zf_40_dataset{num_protein}.csv'
     csv_df = pd.read_csv(csv_file_path)
 
     # Concatenate the first column of TSV with the first column of CSV
@@ -202,26 +202,25 @@ def pwm_format():
 
 def run_deepzf_for_protein(protein_seq, num_protein):
     # First model:
-    os.chdir('/DeepZF')
-
+    os.chdir('/')
     zf_lst = find_zf_binding_domains(protein_seq)
     create_zf_dataset(zf_lst, num_protein)
 
-    input_file_path = f'/DeepZF/Results/zf_40_dataset{num_protein}.csv'  # Dynamic input file name based on num_protein
+    input_file_path = f'/Results/zf_40_dataset{num_protein}.csv'  # Dynamic input file name based on num_protein
     print(input_file_path)
     print(os.getcwd())
 
     with open(input_file_path, 'r') as file:
         print(file.read())
 
-    os.chdir('/DeepZF')
+    os.chdir('/')
     with open('BindZF_predictor/code/model.p', 'wb') as model_file:
         for part in ['BindZF_predictor/code/x01',
                      'BindZF_predictor/code/x02']:  # Assuming x?? means x01, x02, etc.
             with open(part, 'rb') as part_file:
                 model_file.write(part_file.read())
 
-    output_file_path = f"/DeepZF/Results/results{num_protein}.tsv"
+    output_file_path = f"/Results/results{num_protein}.tsv"
     print(output_file_path)
     print("trying to get into model1")
 
@@ -235,14 +234,14 @@ def run_deepzf_for_protein(protein_seq, num_protein):
 
     # Second model:
     create_pwm_dataset(num_protein)
-    os.chdir('/DeepZF/Data/PWMpredictor')
+    os.chdir('/Data/PWMpredictor')
 
     copyfile('c_rc_df.csv', 'c_rc_df_copy.csv')
     clear_aa_columns()
     override_aa_columns()
 
     filter_csv()
-    os.chdir('/DeepZF/PWMpredictor/code')
+    os.chdir('/PWMpredictor/code')
 
     main_PWMpredictor(
         input_file='../../Data/PWMpredictor/c_rc_df_filtered.csv',
@@ -254,5 +253,5 @@ def run_deepzf_for_protein(protein_seq, num_protein):
         print(file.read(1000))  # Print the first 1000 characters
         print(sum(1 for line in file))  # Count the number of lines
 
-    predictions_file_path = "/DeepZF/PWMpredictor/code/predictions.txt"
+    predictions_file_path = "/PWMpredictor/code/predictions.txt"
     return predictions_file_path

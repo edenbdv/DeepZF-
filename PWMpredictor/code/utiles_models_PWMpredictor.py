@@ -1,12 +1,15 @@
 import time
 from sklearn.utils import shuffle
-from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, Dropout, concatenate, Input
-from tensorflow.keras.backend import clear_session
-from tensorflow.keras.optimizers import Adam
+import tensorflow
+
+from tensorflow.python.keras.models import Model
+from tensorflow.python.keras.layers import Dense, Dropout, concatenate, Input
+from tensorflow.python.keras.backend import clear_session
+from tensorflow.python.keras.optimizers import adam_v2
 from tensorflow import keras
 import pickle
-from utiles_loo_PWMpredictor import *
+import PWMpredictor.code.utiles_loo_PWMpredictor
+# from utiles_loo_PWMpredictor import *
 
 
 def model_func(x_train):
